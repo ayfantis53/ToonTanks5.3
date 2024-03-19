@@ -17,4 +17,10 @@ public:
 
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
+
+	auto change_text(FString new_text) -> void;
+private:
+	TSharedPtr<STextBlock> test_display_text_;
+
+	FString test_text_{ "Default" };
 };

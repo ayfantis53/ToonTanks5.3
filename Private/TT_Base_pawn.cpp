@@ -10,7 +10,8 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 //#include "DrawDebugHelpers.h"
-#include "UI/Test_wrapper.h"
+
+#include "UI/STest.h"
 
 // Sets default values
 ATT_Base_pawn::ATT_Base_pawn()
@@ -35,7 +36,7 @@ ATT_Base_pawn::ATT_Base_pawn()
 
 	//
 	test_ = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Test"));
-	test_->SetWidgetClass(UTest_wrapper::StaticClass());
+	test_->SetSlateWidget(SNew(STest));
 	test_->SetRelativeLocation(FVector(150.f, 100.f, 190.f));
 	test_->SetWidgetSpace(EWidgetSpace::Screen);
 	test_->SetupAttachment(base_mesh_);
@@ -85,6 +86,13 @@ auto ATT_Base_pawn::fire() -> void
 	projectile->SetOwner(this);
 
 	//DrawDebugSphere(GetWorld(), location, 25.f, 12, FColor::Red, false, 3.f);
+	auto game_text_ = FString(TEXT("FIRED!!!"));
+	TSharedPtr<SWidget> widget = test_->GetSlateWidget();
+	if (widget->GetType() == "STest")
+	{
+		STest* objectWidget = static_cast<STest*>(widget.Get());
+		objectWidget->change_text(game_text_);
+	}
 }
 
 auto ATT_Base_pawn::handle_destruction() -> void
